@@ -224,7 +224,7 @@ class Plugin {
 		$bucket = strtok( $this->bucket, '/' );
 		$path   = substr( $this->bucket, strlen( $bucket ) );
 
-		return apply_filters( 's3_uploads_bucket_url', 'https://' . $bucket . '.s3.amazonaws.com' . $path );
+		return apply_filters( 's3_uploads_bucket_url', 'https://' . $bucket . '.s3.backblazeb2.com' . $path );
 	}
 
 	/**
@@ -270,7 +270,7 @@ class Plugin {
 	 * @return array{bucket: string, key: string, query: string|null}|null
 	 */
 	public function get_s3_location_for_url( string $url ) : ?array {
-		$s3_url = 'https://' . $this->get_s3_bucket() . '.s3.amazonaws.com/';
+		$s3_url = 'https://' . $this->get_s3_bucket() . '.s3.backblazeb2.com/';
 		if ( strpos( $url, $s3_url ) === 0 ) {
 			$parsed = wp_parse_url( $url );
 			return [

@@ -538,6 +538,7 @@ class Plugin {
 		 *
 		 * @param int $attachment_id Attachment whose ACL has been changed.
 		 * @param string $acl The new ACL that's been set.
+		 * @psalm-suppress TooManyArguments -- Currently do_action doesn't detect variable number of arguments.
 		 */
 		do_action( 's3_uploads_set_attachment_files_acl', $attachment_id, $acl );
 
@@ -681,6 +682,10 @@ class Plugin {
 		$name = pathinfo( $filename, PATHINFO_FILENAME );
 		// The s3:// streamwrapper support listing by partial prefixes with wildcards.
 		// For example, scandir( s3://bucket/2019/06/my-image* )
-		return (array) scandir( trailingslashit( $dir ) . $name . '*' );
+		$scandir = scandir( trailingslashit( $dir ) . $name . '*' );
+		if ( $scandir === false ) {
+			$scandir = []; // Set as empty array for return
+		}
+		return $scandir;
 	}
 }
